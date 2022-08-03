@@ -1,29 +1,13 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[19]:
-
-
 import pandas as pd
 import numpy as np
+
 rep_df = pd.read_csv('senators_updated_tweet_type.csv', 'senators_updated_tweet_type',delimiter=',')
 repD_df = pd.read_csv('representatives_updated_tweet_type.csv', 'senators_updated_tweet_type',delimiter=',')
-
-
-# In[20]:
-
 
 rep_df.head()
 
 
-# In[21]:
-
-
 legis_df = pd.read_csv('legislators-current.csv', 'legislators-current',delimiter=',')
-
-
-# In[22]:
-
 
 legisdict = {}
 j = 0
