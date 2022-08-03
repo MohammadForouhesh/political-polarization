@@ -1,62 +1,26 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[28]:
-
-
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import re
+
 get_ipython().run_line_magic('matplotlib', 'inline')
-
-
-# In[29]:
-
 
 rep_df = pd.read_csv('representatives_h.csv', 'representatives_h',delimiter=',',)
 
-
-# In[30]:
-
-
 rep_df.head()
-
-
-# In[31]:
-
 
 for col in rep_df.columns:
     print(col)
 
-
-# In[32]:
-
-
 rep_df.drop(columns=['coordinates','created_at','hashtags','media','favorite_count','id','in_reply_to_screen_name','in_reply_to_status_id','in_reply_to_user_id','lang','place','possibly_sensitive','retweet_count','reweet_id','retweet_screen_name','source','user_created_at','user_default_profile_image','user_description','user_favourites_count','user_followers_count','user_friends_count','user_listed_count','user_location','user_statuses_count','user_time_zone','user_urls','user_verified']).head()
-
-
-# In[33]:
-
 
 repD_df = rep_df.drop(columns=['coordinates','created_at','hashtags','media','favorite_count','id','in_reply_to_screen_name','in_reply_to_status_id','in_reply_to_user_id','lang','place','possibly_sensitive','retweet_count','reweet_id','retweet_screen_name','source','user_created_at','user_default_profile_image','user_description','user_favourites_count','user_followers_count','user_friends_count','user_listed_count','user_location','user_statuses_count','user_time_zone','user_urls','user_verified'])
 
-
-# In[34]:
-
-
 repD_df.head()
-
-
-# In[35]:
-
 
 for i, j in repD_df.iterrows():
     print(i, j)
     break
-
-
-# In[36]:
 
 
 #Testing DataFrame column codes
@@ -69,10 +33,6 @@ for i in repD_df['text']:
     j = j+1
     if j == 30:
         break
-
-
-# In[37]:
-
 
 replyL = []
 retweetL = []
@@ -106,10 +66,6 @@ print("Retweet length =", len(retweetL))
 print()
 print("Mention length =", len(mentionL))
 
-
-# In[38]:
-
-
 #rep_df = rep_df.drop(columns = ['reply','retweet','mention'])
 #inserting Reply/Retweet/Mention columns to original DataFrame
 
@@ -119,28 +75,12 @@ rep_df.insert(dfLen+1, "retweet", retweetL, False)
 rep_df.insert(dfLen+2, "mention", mentionL, False)
 repD_df = rep_df.copy()
 
-
-# In[39]:
-
-
 rep_df.head(258)
-
-
-# In[40]:
-
 
 pd.set_option('display.max_columns', None)
 rep_df.head(30)
 
-
-# In[41]:
-
-
 print()
-
-
-# In[42]:
-
 
 rep_handles = {}
 dest_handle = []
@@ -205,23 +145,11 @@ print("EXTRA MENTIONS:", extracount)
 print("EXTRA MENTIONS ARR LEN:", len(extra_dest_handle))
 print("EXTRA MENTIONS ROW ARR LEN:", len(extra_rows))
 
-
-# In[43]:
-
-
 rep_df = repD_df
 dfLen = len(rep_df.loc[0])
 rep_df.insert(dfLen, "destination_handle", dest_handle, False)
 
-
-# In[44]:
-
-
 rep_df.head(30)
-
-
-# In[45]:
-
 
 #adding in rows and columns for the extra mentions
 repExtra_df = pd.DataFrame()
@@ -233,60 +161,28 @@ for row in extra_rows:
     repExtra_df = repExtra_df.append(row, ignore_index=True)
 repD_df = repExtra_df.copy()
 
-
-# In[46]:
-
-
 repExtra_df.head()
-
-
-# In[47]:
-
 
 j = 0
 repExtra_df = repExtra_df.drop(columns=['destination_handle'])
 repExtra_df.insert(len(repExtra_df.loc[0]), 'destination_handle', extra_dest_handle) 
 
 
-# In[48]:
-
-
 repExtra_df.head()
-
-
-# In[49]:
-
 
 repExtra_df['user_verified'].replace([1.0, 0.0], [True, False])
 repExtra_df['reply'].replace([1.0, 0.0], [True, False])
 repExtra_df['retweet'].replace([1.0, 0.0], [True, False])
 repExtra_df['mention'].replace([1.0, 0.0], [True, False])
 
-
-# In[50]:
-
-
 repExtra_df.head()
-
-
-# In[51]:
-
 
 repNew_df = pd.concat([rep_df, repExtra_df])
 repNew_df.head()
-
-
-# In[53]:
-
 
 print("LENGTH OF ORIGINAL:", len(rep_df))
 print("LENGTH OF EXTRA:", len(repExtra_df))
 print("LENGTH CALCULATED:", len(rep_df) + len(repExtra_df))
 print("LENGTH OF TOTAL :", len(repNew_df))
 
-
-# In[55]:
-
-
 repNew_df.to_csv('representatives_updated.csv')
-
